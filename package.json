@@ -1,0 +1,25 @@
+{
+  "name": "windguru-machine-learning",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "moment": "^2.22.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "tsc & node ./dist/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/developersworkspace/windguru-machine-learning.git"
+  },
+  "author": "Barend Erasmus",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/developersworkspace/windguru-machine-learning/issues"
+  },
+  "homepage": "https://github.com/developersworkspace/windguru-machine-learning#readme"
+}
