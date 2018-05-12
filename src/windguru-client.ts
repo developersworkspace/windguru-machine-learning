@@ -60,8 +60,6 @@ export class WindguruClient {
             url: `https://www.windguru.cz/ajax/ajax_archive.php`,
         });
 
-        console.log(response.status);
-
         return `${response.data}</td></tr></table>`;
     }
 

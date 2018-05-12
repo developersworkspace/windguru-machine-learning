@@ -10,9 +10,14 @@ import { WindguruClient } from './windguru-client';
         new Visibility(3, new Date(2018, 5 - 1, 5, 9)),
         new Visibility(4, new Date(2018, 5 - 1, 6, 9)),
         new Visibility(4, new Date(2018, 5 - 1, 10, 12)),
+        new Visibility(4, new Date(2018, 5 - 1, 12, 12)),
+
+        // OTHER:
+        new Visibility(5, new Date(2018, 2 - 1, 22, 12)),
+        new Visibility(4, new Date(2018, 3 - 1, 16, 8)),
     ];
 
-    const testTimestamp: Date = new Date(2018, 4 - 1, 13, 12);
+    const testTimestamp: Date = new Date(2018, 2 - 1, 9, 12);
 
     const testMeasurement: Measurement = await new WindguruClient().getMeasurement(91, testTimestamp);
 

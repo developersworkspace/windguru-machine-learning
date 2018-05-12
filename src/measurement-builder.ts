@@ -99,13 +99,23 @@ export class MeasurementBuilder {
                 const index: number = (measurementAttributeIndex * timeOfDays.length) + timeOfDayIndex + 1;
 
                 if (measurementAttributes[measurementAttributeIndex] === 'Wind speed (knots)') {
-                    const rawValue: string = cheerio(columns[index]).html();
+                    let rawValue: string = cheerio(columns[index]).html();
 
                     if (rawValue === ' - ') {
                         continue;
                     }
 
-                    measurement.windSpeedInKnots = parseInt(rawValue, undefined);
+                    if (new RegExp(/<b>.*<\/b>/).test(rawValue)) {
+                        rawValue = cheerio(columns[index]).find('b').html();
+                    }
+
+                    const value: number = parseInt(rawValue, undefined);
+
+                    if (isNaN(value)) {
+                        console.log(`Could not parse 'windSpeedInKnots' [${rawValue}]`);
+                    }
+
+                    measurement.windSpeedInKnots = value;
                 }
 
                 if (measurementAttributes[measurementAttributeIndex] === 'Wind direction') {
@@ -114,18 +124,34 @@ export class MeasurementBuilder {
                     const matches: RegExpExecArray = new RegExp(/rotate\(([\d]+),50,50\)/).exec(rawValue);
 
                     if (matches) {
-                        measurement.windDirectionInDegrees = parseInt(matches[1], undefined);
+                        const value: number = parseInt(matches[1], undefined);
+
+                        if (isNaN(value)) {
+                            console.log(`Could not parse 'windDirectionInDegrees' [${rawValue}]`);
+                        }
+
+                        measurement.windDirectionInDegrees = value;
                     }
                 }
 
                 if (measurementAttributes[measurementAttributeIndex] === 'Wave (m)') {
-                    const rawValue: string = cheerio(columns[index]).html();
+                    let rawValue: string = cheerio(columns[index]).html();
 
                     if (rawValue === ' - ') {
                         continue;
                     }
 
-                    measurement.waveHeightInMeters = parseInt(rawValue, undefined);
+                    if (new RegExp(/<b>.*<\/b>/).test(rawValue)) {
+                        rawValue = cheerio(columns[index]).find('b').html();
+                    }
+
+                    const value: number = parseInt(rawValue, undefined);
+
+                    if (isNaN(value)) {
+                        console.log(`Could not parse 'waveHeightInMeters' [${rawValue}]`);
+                    }
+
+                    measurement.waveHeightInMeters = value;
                 }
 
                 if (measurementAttributes[measurementAttributeIndex] === 'Wave direction') {
@@ -134,7 +160,13 @@ export class MeasurementBuilder {
                     const matches: RegExpExecArray = new RegExp(/rotate\(([\d]+),50,50\)/).exec(rawValue);
 
                     if (matches) {
-                        measurement.waveDirectionInDegrees = parseInt(matches[1], undefined);
+                        const value: number = parseInt(matches[1], undefined);
+
+                        if (isNaN(value)) {
+                            console.log(`Could not parse 'waveDirectionInDegrees' [${rawValue}]`);
+                        }
+
+                        measurement.waveDirectionInDegrees = value;
                     }
                 }
 
@@ -145,7 +177,13 @@ export class MeasurementBuilder {
                         continue;
                     }
 
-                    measurement.wavePeriodInSeconds = parseInt(rawValue, undefined);
+                    const value: number = parseInt(rawValue, undefined);
+
+                    if (isNaN(value)) {
+                        console.log(`Could not parse 'wavePeriodInSeconds' [${rawValue}]`);
+                    }
+
+                    measurement.wavePeriodInSeconds = value;
                 }
 
                 if (measurementAttributes[measurementAttributeIndex] === 'Temperature (&#xB0;C)') {
@@ -155,7 +193,13 @@ export class MeasurementBuilder {
                         continue;
                     }
 
-                    measurement.temperatureInCelsius = parseInt(rawValue, undefined);
+                    const value: number = parseInt(rawValue, undefined);
+
+                    if (isNaN(value)) {
+                        console.log(`Could not parse 'temperatureInCelsius' [${rawValue}]`);
+                    }
+
+                    measurement.temperatureInCelsius = value;
                 }
             }
 
