@@ -1,7 +1,5 @@
-import { Measurement } from './measurement';
-import { StatisticsHelper } from './statistics-helper';
+import { Predictor } from './predictor';
 import { Visibility } from './visibility';
-import { WindguruClient } from './windguru-client';
 
 (async () => {
     const visibilities: Visibility[] = [
@@ -17,46 +15,9 @@ import { WindguruClient } from './windguru-client';
         new Visibility(4, new Date(2018, 3 - 1, 16, 8)),
     ];
 
-    const testTimestamp: Date = new Date(2018, 2 - 1, 9, 12);
+    const predictor: Predictor = new Predictor(visibilities);
 
-    const testMeasurement: Measurement = await new WindguruClient().getMeasurement(91, testTimestamp);
+    await predictor.train();
 
-    if (!testMeasurement) {
-        console.log('ERROR');
-        return;
-    }
-
-    const distances: any = {};
-
-    const measurements: Measurement[] = [];
-
-    for (const visibility of visibilities) {
-        const measurement: Measurement = await new WindguruClient().getMeasurement(91, visibility.timestamp);
-
-        if (!measurement) {
-            continue;
-        }
-
-        measurements.push(measurement);
-    }
-
-    for (const measurement of measurements) {
-        distances[measurement.timestamp.toString()] = StatisticsHelper.euclideanDistance([
-            measurement.temperatureInCelsius,
-            measurement.waveDirectionInDegrees,
-            measurement.waveHeightInMeters,
-            measurement.wavePeriodInSeconds,
-            measurement.windDirectionInDegrees,
-            measurement.windSpeedInKnots,
-        ], [
-            testMeasurement.temperatureInCelsius,
-            testMeasurement.waveDirectionInDegrees,
-            testMeasurement.waveHeightInMeters,
-            testMeasurement.wavePeriodInSeconds,
-            testMeasurement.windDirectionInDegrees,
-            testMeasurement.windSpeedInKnots,
-        ]);
-    }
-
-    console.log(distances);
+    // const testTimestamp: Date = new Date(2018, 2 - 1, 9, 12);
 })();
