@@ -19,5 +19,7 @@ import { Visibility } from './visibility';
 
     await predictor.train();
 
-    // const testTimestamp: Date = new Date(2018, 2 - 1, 9, 12);
+    const result: number = await predictor.predict(new Date(2018, 5 - 1, 18, 12));
+
+    console.log(result);
 })();

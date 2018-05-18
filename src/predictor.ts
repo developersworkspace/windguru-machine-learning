@@ -11,6 +11,47 @@ export class Predictor {
 
     }
 
+    public async predict(timestamp: Date): Promise<number> {
+        const predictMeasurement: Measurement = await new WindguruClient().getMeasurement(91, timestamp);
+
+        let nearestDistance: number = null;
+
+        let nearestVisibility: Visibility = null;
+
+        for (const visibility of this.visibilities) {
+            const measurement: Measurement = await new WindguruClient().getMeasurement(91, visibility.timestamp);
+
+            if (!measurement) {
+                continue;
+            }
+
+            const distance: number = StatisticsHelper.euclideanDistance([
+                measurement.temperatureInCelsius,
+                measurement.waveDirectionInDegrees,
+                measurement.waveHeightInMeters,
+                measurement.wavePeriodInSeconds,
+                measurement.windDirectionInDegrees,
+                measurement.windSpeedInKnots,
+            ], [
+                    predictMeasurement.temperatureInCelsius,
+                    predictMeasurement.waveDirectionInDegrees,
+                    predictMeasurement.waveHeightInMeters,
+                    predictMeasurement.wavePeriodInSeconds,
+                    predictMeasurement.windDirectionInDegrees,
+                    predictMeasurement.windSpeedInKnots,
+                ]);
+
+            if (!nearestDistance || distance < nearestDistance) {
+                nearestDistance = distance;
+                nearestVisibility = visibility;
+            }
+        }
+
+        const rating: number = (this.averageDistance - nearestDistance) / this.averageDistance * nearestVisibility.rating;
+
+        return rating;
+    }
+
     public async train(): Promise<void> {
         let count: number = 0;
         let totalDistance: number = 0;
