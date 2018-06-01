@@ -11,15 +11,15 @@ import { Visibility } from './visibility';
         new Visibility(4, new Date(2018, 5 - 1, 12, 12)),
 
         // OTHER:
-        new Visibility(5, new Date(2018, 2 - 1, 22, 12)),
-        new Visibility(4, new Date(2018, 3 - 1, 16, 8)),
+        // new Visibility(5, new Date(2018, 2 - 1, 22, 12)),
+        // new Visibility(4, new Date(2018, 3 - 1, 16, 8)),
     ];
 
     const predictor: Predictor = new Predictor(visibilities);
 
     await predictor.train();
 
-    const result: number = await predictor.predict(new Date(2018, 5 - 1, 18, 12));
+    const result: number = await predictor.predict(new Date());
 
     console.log(result);
 })();

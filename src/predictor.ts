@@ -14,6 +14,10 @@ export class Predictor {
     public async predict(timestamp: Date): Promise<number> {
         const predictMeasurement: Measurement = await new WindguruClient().getMeasurement(91, timestamp);
 
+        return this.predictWithMeasurement(predictMeasurement);
+    }
+
+    public async predictWithMeasurement(predictMeasurement: Measurement): Promise<number> {
         let nearestDistance: number = null;
 
         let nearestVisibility: Visibility = null;
